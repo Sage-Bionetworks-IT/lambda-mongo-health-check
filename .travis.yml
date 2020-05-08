@@ -22,7 +22,7 @@ jobs:
         - pre-commit autoupdate
         - pre-commit run --all-files
         - sam build
-        - python -m pytest tests/ -v
+#        - python -m pytest tests/ -v
     - stage: deploy
       script:
         - sam build

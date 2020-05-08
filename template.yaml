@@ -1,28 +1,73 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  Hello World lambda
+  Lambda to check Mongo database health
 
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
     Timeout: 3
 
+Parameters:
+  Host:
+    Description: "The DB Host (IP or DNS name)"
+    Type: String
+  Port:
+    Description: "The DB port"
+    Default: 27017
+    Type: Number
+  Database:
+    Description: "The DB name"
+    Default: None
+    Type: String
+  DbUser:
+    Description: "The DB user name"
+    Default: "admin"
+    Type: String
+  DbPassword:
+    Description: "The DB password"
+    Type: String
+    NoEcho: 'true'
+  SubnetIds:
+    Description: "The DB Subnet ID"
+    Type: String
+  SecurityGroupIds:
+    Description: "The security group to access the DB"
+    Type: String
+  Schedule:
+    Description: Schedule to execute this lambda
+    Type: String
+    Default: rate(1 day)
+    ConstraintDescription: "Use schedule format: https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.htm"
 Resources:
-  HelloWorldFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+  Function:
+    Type: AWS::Serverless::Function
     Properties:
-      CodeUri: hello_world/
-      Handler: app.lambda_handler
+      CodeUri: mongo_health_check/
+      Handler: app.handler
       Runtime: python3.6
       Role: !GetAtt FunctionRole.Arn
+      VpcConfig:
+        SubnetIds:
+          - Ref: SubnetIds
+        SecurityGroupIds:
+          - Ref: SecurityGroupIds
       Events:
-        HelloWorld:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+        RecurringSchedule:
+          Type: Schedule
           Properties:
-            Path: /hello
+            Schedule: !Ref Schedule
+        CheckApi:
+          Type: Api
+          Properties:
+            Path: /check
             Method: get
-
+      Environment:
+        Variables:
+          HOST: !Ref Host
+          PORT: !Ref Port
+          DATABASE: !Ref Database
+          DBUSER: !Ref DbUser
+          DBPASSWORD: !Ref DbPassword
   FunctionRole:   # execute lambda function with this role
     Type: AWS::IAM::Role
     Properties:
@@ -37,17 +82,13 @@ Resources:
               - sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-
 Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  HelloWorldApi:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  HelloWorldFunctionArn:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt HelloWorldFunction.Arn
-  HelloWorldFunctionRoleArn:
-    Description: "Implicit IAM Role created for Hello World function"
+  FunctionApi:
+    Description: "API Gateway Host URL for Prod stage for mongo check function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/check/"
+  FunctionArn:
+    Description: "Lambda Function ARN"
+    Value: !GetAtt Function.Arn
+  FunctionRoleArn:
+    Description: "Implicit IAM Role created for function"
     Value: !GetAtt FunctionRole.Arn
