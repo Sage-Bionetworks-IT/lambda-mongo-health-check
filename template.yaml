@@ -82,6 +82,16 @@ Resources:
               - sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - !Ref FunctionPolicy
+  FunctionPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: 'Allow'
+            Action: 'ec2:*'
+            Resource: '*'
 Outputs:
   FunctionApi:
     Description: "API Gateway Host URL for Prod stage for mongo check function"
