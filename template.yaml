@@ -6,7 +6,7 @@ Description: >
 Metadata:
   AWS::ServerlessRepo::Application:
     Name: "lambda-mongo-health-check"
-    Description: "This is a Lamba to check the health of a Mongo database running on an EC2"
+    Description: "This is a Lambda to check the health of a Mongo database running on an EC2"
     Author: "zaro0508"
     SpdxLicenseId: "Apache-2.0"
     # paths are relative to .aws-sam/build directory
