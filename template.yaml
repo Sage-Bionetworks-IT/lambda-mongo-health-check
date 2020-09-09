@@ -3,6 +3,20 @@ Transform: AWS::Serverless-2016-10-31
 Description: >
   Lambda to check Mongo database health
 
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: "lambda-mongo-health-check"
+    Description: "This is a Lambda to check the health of a Mongo database running on an EC2"
+    Author: "zaro0508"
+    SpdxLicenseId: "Apache-2.0"
+    # paths are relative to .aws-sam/build directory
+    LicenseUrl: "LICENSE"
+    ReadmeUrl: "README.md"
+    Labels: ["serverless", "custom-resource", "mongo", "database"]
+    HomePageUrl: "https://github.com/Sage-Bionetworks-IT/lambda-mongo-health-check"
+    SemanticVersion: "0.0.1"
+    SourceCodeUrl: "https://github.com/Sage-Bionetworks-IT/lambda-mongo-health-check/tree/0.0.1"
+
 Globals:
   Function:
     Timeout: 3
