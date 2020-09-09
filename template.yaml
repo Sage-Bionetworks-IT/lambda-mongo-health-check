@@ -58,7 +58,7 @@ Resources:
     Properties:
       CodeUri: mongo_health_check/
       Handler: app.handler
-      Runtime: python3.6
+      Runtime: python3.7
       Role: !GetAtt FunctionRole.Arn
       VpcConfig:
         SubnetIds:

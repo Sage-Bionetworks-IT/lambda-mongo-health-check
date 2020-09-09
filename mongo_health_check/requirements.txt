@@ -1,2 +1,1 @@
-pymongo
-requests
+pymongo~=3.11.0
