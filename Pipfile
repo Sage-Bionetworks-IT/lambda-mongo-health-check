@@ -14,4 +14,4 @@ awscli = "~=1.18.132"
 pymongo = "~=3.11.0"
 
 [requires]
-python_version = "3.6"
+python_version = "3.7"
