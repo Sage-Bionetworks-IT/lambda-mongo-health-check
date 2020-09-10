@@ -14,8 +14,8 @@ Metadata:
     ReadmeUrl: "README.md"
     Labels: ["serverless", "custom-resource", "mongo", "database"]
     HomePageUrl: "https://github.com/Sage-Bionetworks-IT/lambda-mongo-health-check"
-    SemanticVersion: "0.0.2"
-    SourceCodeUrl: "https://github.com/Sage-Bionetworks-IT/lambda-mongo-health-check/tree/0.0.2"
+    SemanticVersion: "0.0.1"
+    SourceCodeUrl: "https://github.com/Sage-Bionetworks-IT/lambda-mongo-health-check/tree/0.0.1"
 
 Globals:
   Function:
