@@ -75,7 +75,3 @@ Install the lambda using sceptre:
 ```shell script
 sceptre --var "profile=my-profile" --var "region=us-east-1" launch prod/lamba-mongo-health-check.yaml
 ```
-
-## Author
-
-Your Name Here.
