@@ -60,15 +60,14 @@ Create the following [sceptre](https://github.com/Sceptre/sceptre) file
 
 config/prod/lamba-mongo-health-check.yaml
 ```yaml
-template_path: "remote/lamba-mongo-health-check.yaml"
+template:
+  type: http
+  url: https://s3.amazonaws.com/bootstrap-awss3cloudformationbucket-19qromfd235z9/lamba-mongo-health-check/master/lamba-mongo-health-check.yaml
 stack_name: "lamba-mongo-health-check"
 stack_tags:
   Department: "Platform"
   Project: "Infrastructure"
   OwnerEmail: "it@sagebase.org"
-hooks:
-  before_launch:
-    - !cmd "curl https://s3.amazonaws.com/bootstrap-awss3cloudformationbucket-19qromfd235z9/lamba-mongo-health-check/master/lamba-mongo-health-check.yaml --create-dirs -o templates/remote/lamba-mongo-health-check.yaml"
 ```
 
 Install the lambda using sceptre:
